@@ -1,11 +1,11 @@
-DROP DATABASE IF EXISTS employees_db;
-CREATE DATABASE employees_db;
+DROP DATABASE IF EXISTS survivors_db;
+CREATE DATABASE survivors_db;
 
-\c employees_db;
+\c survivors_db;
 
-CREATE TABLE humanity(
+CREATE TABLE alignment(
   id SERIAL PRIMARY KEY,
-  humanity_id VARCHAR(10) UNIQUE NOT NULL
+  alignment_id VARCHAR(10) UNIQUE NOT NULL
 );
 
 CREATE TABLE division(
@@ -21,22 +21,22 @@ CREATE TABLE role(
   FOREIGN KEY (division) REFERENCES division(id)
 );
 
-CREATE TABLE employees(
-  employee_id SERIAL PRIMARY KEY,
+CREATE TABLE survivors(
+  survivor_id SERIAL PRIMARY KEY,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
-  humanity_id INTEGER NOT NULL,
-  FOREIGN KEY (humanity_id) REFERENCES humanity(id),
+  alignment_id INTEGER NOT NULL,
+  FOREIGN KEY (alignment_id) REFERENCES alignment(id),
   division_id INTEGER NOT NULL,
   FOREIGN KEY (division_id) REFERENCES division(id),
   role_id INTEGER NOT NULL,
   FOREIGN KEY (role_id) REFERENCES role(id),
   commander_id INTEGER,
-  FOREIGN KEY(commander_id) REFERENCES employees(employee_id)
+  FOREIGN KEY(commander_id) REFERENCES survivors(survivor_id)
 );
 
--- SELECT * humanity.humanity_id, division.id, role.id, employee.commander_id
--- FROM employees;
--- JOIN humanity ON businesses.business_id = relationships.business_id
+-- SELECT * alignment.alignment_id, division.id, role.id, survivor.commander_id
+-- FROM survivors;
+-- JOIN alignment ON businesses.business_id = relationships.business_id
 -- JOIN division ON
 -- JOIN role ON relationships.locations_id = locations.location_id;

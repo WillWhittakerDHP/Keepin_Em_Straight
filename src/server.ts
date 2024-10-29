@@ -13,8 +13,7 @@ app.use(express.json());
 
 const deletedRow = 2;
 
-pool.query(
-  `DELETE FROM favorite_books WHERE id = $1`,
+pool.query(`DELETE FROM favorite_books WHERE id = $1`,
   [deletedRow],
   (err: Error, result: QueryResult) => {
   if (err) {
