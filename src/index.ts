@@ -12,7 +12,7 @@ function chooseCensusActions(): void {
     {
       type: 'list',
       name: 'databaseAction',
-      message: 'What do you want to do about the survivors from the 12 Colonies?',
+      message: 'What do you want to do about the employees?',
       choices: [`View`, `Add`, `Update`, `Delete`, `Nothing`],
     },
   ])
@@ -49,7 +49,7 @@ function chooseCensusActions(): void {
 
 function continueCensusActions(): void {
   if (!exit) {
-    // if the user does not want to exit, perform actions on the selected survivor
+    // if the user does not want to exit, perform actions on the selected employee
     chooseCensusActions();
   } else {
   // exit the cli if the user selects exit

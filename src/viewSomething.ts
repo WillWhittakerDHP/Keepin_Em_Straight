@@ -12,84 +12,41 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// let targetAlignmentName:string = '';
-let targetAlignmentNumber:number = 0;
-let targetDivision = ['',''];
+let targetDepartment = ['',''];
 
-const alignmentChooser =function() {
+function departmentChooser() {
   inquirer.prompt([
     {
       type: 'list',
-      name: 'alignmentChoice',
-      message: 'What alignment do you care about?',
-      choices: [ 'Human', 'Cylon', 'Hybrid', 'Angel', 'Dead'
-      ],
-    },
-  ])
-  .then((answers) => {
-    switch (answers.alignmentChoice) {
-      case 'Human': {
-        // targetAlignmentName = 'Living Humans';
-        targetAlignmentNumber = 0;
-        break;
-      }
-      case 'Cylon': {
-        // targetAlignmentName = 'Living Cylons';
-        targetAlignmentNumber = 1;
-        break;
-      }
-      case 'Hybrid': {
-        // targetAlignmentName = 'Hybrid';
-        targetAlignmentNumber = 2;
-        break;
-      }
-      case 'Angel': {
-        // targetAlignmentName = 'Angel';
-        targetAlignmentNumber = 3;
-        break;
-      }
-      case 'Dead': {
-        // targetAlignmentName = 'Deceased';
-        targetAlignmentNumber = 4;
-        break;
-      }
-    }
-  })
-};
-
-function divisionChooser() {
-  inquirer.prompt([
-    {
-      type: 'list',
-      name: 'divisionChoice',
-      message: 'What division do you care about?',
+      name: 'departmentChoice',
+      message: 'What department do you care about?',
       choices: [ 'Command', 'Combat', 'Engineering', 'Executive', 'Quorum', 'Civilian' ],
     },
   ])
   .then((answers) => {
-    switch (answers.alignmentChoice) {
+    switch (answers.departmentChoice) {
       case 'Command': {
-        targetDivision = ['Command','00'];
+        targetDepartment = ['Command','00'];
         break;
       }
       case 'Combat': {
-        targetDivision = ['Combat','10'];
+        targetDepartment = ['Combat','10'];
         break;
       }
       case 'Engineering': {
-        targetDivision = ['Engineering','20'];
+        targetDepartment = ['Engineering','20'];
         break;
       }
       case 'Executive': {
-        targetDivision = ['Executive','30'];
+        targetDepartment = ['Executive','30'];
         break;
       }
       case 'Quorum': {
-        targetDivision = ['Quorum','40'];
+        targetDepartment = ['Quorum','40'];
         break;
       }
       case 'Civilian': {
-        targetDivision = ['Civilian','50'];
+        targetDepartment = ['Civilian','50'];
         break;
       }
     }
@@ -102,19 +59,17 @@ function viewSomething() {
     {
     type: 'list',
     name: 'viewWhat',
-    message: 'What do you want to know about the survivors from the 12 Colonies?',
-    choices: [    'All humanity',
+    message: 'What do you want to know about the employees?',
+    choices: [    'All employees',
       'All roles',
-      'All divisions',
-      'All alignments',
-      'Survivors by alignment',
-      'Survivors by division',
-      'Each division`s total utilized budget'
+      'All departments',
+      'Employees by department',
+      'Each department`s total utilized budget'
     ],
   },])
   .then((answers) => {
     switch (answers.viewWhat) {
-      case 'All humanity': {
+      case 'All employees': {
         viewHumanity();
         break;
       }
@@ -122,104 +77,75 @@ function viewSomething() {
         viewRoles();
         break;
       }
-      case 'All divisions': {
-        viewDivisions();
+      case 'All departments': {
+        viewDepartments();
         break;
       }
-      case 'All alignments': {
-        viewAlignments();
+      case 'Employees by department': {
+        viewEmployeesByDepartment();
         break;
       }
-      case 'Survivors by alignment': {
-        viewSurvivorsByAlignment();
-        break;
-      }
-      case 'Survivors by division': {
-        viewSurvivorsByDivision();
-        break;
-      }
-      case 'Each division`s total utilized budget': {
-        viewDivisionBudgets();
+      case 'Each department`s total utilized budget': {
+        viewDepartmentBudgets();
       }
     }})};
-// // TODO: THEN I am presented with a formatted table showing survivor data, including survivor ids, full names, roles, divisions, salaries, and commanders to whom the survivors report
+// // TODO: THEN I am presented with a formatted table showing employee data, including employee ids, full names, roles, departments, salaries, and manager to whom the employees report
 const viewHumanity = (() => {
-pool.query(`SELECT concat(first_name, ' ', last_name) AS "Name", alignments.alignment_type AS "Alignment", divisions.division_name AS "Division", roles.title AS "Role", roles.salary AS "Salary", survivors.commander AS "Commander"
-FROM survivors
-JOIN alignments ON survivors.alignment_id = alignments.alignment_id
-JOIN divisions ON survivors.division_id = divisions.division_id
-JOIN roles ON survivors.role_id = roles.role_id;`, (err: Error, result: QueryResult) => {
+pool.query(`SELECT concat(first_name, ' ', last_name) AS "Name", departments.department_name AS "Department", roles.title AS "Role", roles.salary AS "Salary"
+
+FROM employees
+JOIN departments ON employees.department_id = departments.department_id
+JOIN roles ON employees.role_id = roles.role_id;`, (err: Error, result: QueryResult) => {
   if (err) {
     console.log(err);
   } else if (result) {
     console.table(result.rows);
+    return; 
   }
-})});
+}
+)
+}
+);
 
-// // TODO: THEN I am presented with the role, role id, the division that role belongs to, and the salary for that role
+// // TODO: THEN I am presented with the role, role id, the department that role belongs to, and the salary for that role
 const viewRoles = (() => (
-  pool.query(`SELECT title AS "Role", role_id AS "Role ID", salary AS "Salary (in Cubits)", divisions.division_name AS "Division" FROM roles JOIN divisions ON roles.division = divisions.division_id;`, (err: Error, result: QueryResult) => {
+  pool.query(`SELECT title AS "Role", role_id AS "Role ID", salary AS "Salary (in Cubits)", departments.department_name AS "Department" FROM roles JOIN departments ON roles.department = departments.department_id;`, (err: Error, result: QueryResult) => {
     if (err) {
       console.log(err);
     } else if (result) {
       console.table(result.rows);
     }
 })));
-// // TODO: THEN I am presented with a formatted table showing alignment names and alignment ids
-const viewAlignments = (() => (
-  pool.query(`SELECT alignment_type AS "Alignment", alignment_id AS "Alignment ID" FROM alignments;`, (err: Error, result: QueryResult) => {
+// // TODO: THEN I am presented with a formatted table showing department names and department ids
+const  viewDepartments = (() => (
+  pool.query(`SELECT department_name AS "Department", department_id AS "Department ID" FROM departments;`, (err: Error, result: QueryResult) => {
     if (err) {
       console.log(err);
     } else if (result) {
       console.table(result.rows);
     }
 })));
-// // TODO: THEN I am presented with a formatted table showing division names and division ids
-const  viewDivisions = (() => (
-  pool.query(`SELECT division_name AS "Division", division_id AS "Division ID" FROM divisions;`, (err: Error, result: QueryResult) => {
-    if (err) {
-      console.log(err);
-    } else if (result) {
-      console.table(result.rows);
-    }
-})));
-// TODO: THEN I am presented with a formatted table showing survivors with their alignment including survivor's full names and division
-const viewSurvivorsByAlignment = function() {  
-  alignmentChooser();
-  console.log (targetAlignmentNumber);
-  pool.query(`SELECT concat(first_name, ' ', last_name) AS "Alignment", divisions.division_name AS "Division"
-FROM survivors 
-JOIN alignments ON survivors.alignment_id = alignments.alignment_id
-JOIN divisions ON survivors.division_id = divisions.division_id
-WHERE survivors.alignment_id = $1;`, [targetAlignmentNumber], (err: Error, result: QueryResult) => {
+// TODO: THEN I am presented with a formatted table showing employees in that department including employee's full names, and role
+const viewEmployeesByDepartment = function(){
+  departmentChooser;
+  pool.query(`SELECT concat(first_name, ' ', last_name) AS "Department", roles.title AS "Role"
+FROM employees 
+JOIN departments ON employees.department_id = departments.department_id
+JOIN roles ON employees.role_id = roles.role_id 
+WHERE employees.department_id = $1;`, [targetDepartment], (err: Error, result: QueryResult) => {
   if (err) {
     console.log(err);
     } else if (result) {
       console.table(result.rows);
       }
       })};
-// TODO: THEN I am presented with a formatted table showing survivors in that division including survivor's full names, role, and alignment
-const viewSurvivorsByDivision = function(){
-  divisionChooser;
-  pool.query(`SELECT concat(first_name, ' ', last_name) AS "Division", alignments.alignment_type AS "Alignment", roles.title AS "Role"
-FROM survivors 
-JOIN alignments ON survivors.alignment_id = alignments.alignment_id
-JOIN divisions ON survivors.division_id = divisions.division_id
-JOIN roles ON survivors.role_id = roles.role_id 
-WHERE survivors.division_id = $1;`, [targetDivision], (err: Error, result: QueryResult) => {
-  if (err) {
-    console.log(err);
-    } else if (result) {
-      console.table(result.rows);
-      }
-      })};
-// // TODO: THEN I am presented with a formatted table showing the name of each division and full budget for that division
-const viewDivisionBudgets = (() => (
-  pool.query(`SELECT divisions.division_name AS "Division", SUM(roles.salary) AS "Budget (in cubits)"
-FROM survivors
-JOIN divisions ON survivors.division_id = divisions.division_id
-JOIN roles ON divisions.division_id = divisions.division_id
-GROUP BY divisions.division_name;`, (err: Error, result: QueryResult) => {
+// // TODO: THEN I am presented with a formatted table showing the name of each department and full budget for that department
+const viewDepartmentBudgets = (() => (
+  pool.query(`SELECT departments.department_name AS "Department", SUM(roles.salary) AS "Budget (in cubits)"
+FROM employees
+JOIN departments ON employees.department_id = departments.department_id
+JOIN roles ON departments.department_id = departments.department_id
+GROUP BY departments.department_name;`, (err: Error, result: QueryResult) => {
     if (err) {
       console.log(err);
     } else if (result) {

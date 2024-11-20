@@ -1,35 +1,32 @@
 import inquirer from "inquirer";
 
-// // define the Survivor class
-class Survivor {
-  survivorId: (number);
+// // define the Employee class
+class Employee {
+  employeeId: (number);
   firstName: (string);
   lastName: (string);
-  alignment: (string);
-  division: (string);
+  department: (string);
   role: (string);
-  commander: (string);
+  manager: (string);
 
   constructor(
-    survivorId: (number),
+    employeeId: (number),
     firstName: (string),
     lastName: (string),
-    alignment: (string),
-    division: (string),
+    department: (string),
     role: (string),
-    commander: (string)
+    manager: (string)
   ) {
-    this.survivorId = survivorId;
+    this.employeeId = employeeId;
     this.firstName = firstName;
     this.lastName = lastName;
-    this.alignment = alignment;
-    this.division = division;
+    this.department = department;
     this.role = role;
-    this.commander = commander;
+    this.manager = manager;
     }
   
-  // method to create a survivor for Add
-  createSurvivorRecord(): void {
+  // method to create a employee for Add
+  createEmployeeRecord(): void {
     inquirer
     .prompt([
       {
@@ -44,40 +41,33 @@ class Survivor {
       },
       {
         type: 'list',
-        name: 'alignment',
-        message: 'Select an Alignment',
-        choices: ['Human', 'Cylon', 'Hybrid', 'Angel', 'Deceased'],
-      },
-      {
-        type: 'list',
-        name: 'division',
-        message: 'In which division does this person serve?',
+        name: 'department',
+        message: 'In which department does this person serve?',
         choices: ['Command', 'Combat', 'Engineering', 'Executive', 'Quorum', 'Civilian'],
       },
       {
         type: 'list',
         name: 'role',
-        message: 'In which division does this person serve?',
+        message: 'In which department does this person serve?',
         choices: ['Command', 'Combat', 'Engineering', 'Executive', 'Quorum', 'Civilian'],
       },      {
         type: 'list',
-        name: 'commander',
-        message: `Who is this person's commander?`,
+        name: 'manager',
+        message: `Who is this person's manager?`,
         choices: ['Command', 'Combat', 'Engineering', 'Executive', 'Quorum', 'Civilian'],
       },
     ])
     .then((answers) => {
-      const survivor = new Survivor(
+      const employee = new Employee(
         // TODO: How do I deal with the ID so it doesn't conflict with the database?
         0,
         answers.firstName,
         answers.lastName,
-        answers.alignment,
-        answers.division,
+        answers.department,
         answers.role,
-        answers.commander,
+        answers.manager,
       );
-      return survivor;
+      return employee;
 });}} 
 
-export default Survivor
+export default Employee

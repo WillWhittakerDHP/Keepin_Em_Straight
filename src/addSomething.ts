@@ -2,7 +2,7 @@
 // import express from 'express';
 // import { QueryResult } from 'pg';
 // import { pool, connectToDb } from './connection.js';
-// import { firstName, lastName, alignment, division, role, commander } from './tryout.js';
+// import { firstName, lastName, department, role, manager } from './index.js';
 
 // await connectToDb();
 
@@ -18,35 +18,33 @@
 //     {
 //       type: 'list',
 //       name: 'addWhat',
-//       message: 'What do you want to know about the survivors from the 12 Colonies?',
-//       choices: [    'A survivor',
+//       message: 'What do you want to know about the employees from the 12 Colonies?',
+//       choices: [    'An employee',
 //         'A role',
-//         'A division',
-//         'An alignment'],
+//         'A department',
 //       },])
 //       .then((answers) => {
 //         switch (answers.addWhat) {
-//           case 'A survivor': {
-//             addSurvivor();
+//           case 'An employee': {
+//             addEmployee();
 //             break;
 //           }
 //           // case 'A role': {
 //           //   addRole();
 //           //   break;
 //           // }
-//           // case 'A division': {
-//           //   addDivision();
+//           // case 'A department': {
+//           //   addDepartment();
 //           //   break;
 //           // }
-//           // case 'An alignment': {
 //           //   addAlignment();
 //           //   break;
 //           }
 //         })};
 
-// // TODO: THEN I am prompted to enter a new survivor’s first name, last name, alignment, role, and commander and then that survivor is added to the database
-// const addSurvivor = (() => (
-//     pool.query(`INSERT INTO survivors (first_name, last_name, alignment_id, division_id, role_id, commander) VALUES ('$1', '$2', $3, $4, $5, $6)`,[firstName, lastName, alignment, division, role, commander], (err: Error, result: QueryResult) => {
+// // TODO: THEN I am prompted to enter a new employee’s first name, last name,  role, and manager and then that employee is added to the database
+// const addEmployee = (() => (
+//     pool.query(`INSERT INTO employees (first_name, last_name, department_id, role_id, manager) VALUES ('$1', '$2', $3, $4, $5, $6)`,[firstName, lastName,  department, role, manager], (err: Error, result: QueryResult) => {
 //       if (err) {
 //         console.log(err);
 //       } else if (result) {
@@ -54,7 +52,7 @@
 //       }
 //     })
 //     ));
-// //     // TODO: THEN I am prompted to enter the name, salary, and division for the role and then that role is added to the database
+// //     // TODO: THEN I am prompted to enter the name, salary, and department for the role and then that role is added to the database
 // //     const addRole = (() => (
 // //       pool.query(`SELECT * FROM roles`, (err: Error, result: QueryResult) => {
 // //         if (err) {
@@ -65,8 +63,8 @@
 // //       })
       
 // //       ));
-// //       // TODO: THEN I am prompted to enter the name of the division and that division is added to the database
-// // const addDivision = (() => (
+// //       // TODO: THEN I am prompted to enter the name of the department and that department is added to the database
+// // const addDepartment = (() => (
 // //   pool.query(`SELECT * FROM roles`, (err: Error, result: QueryResult) => {
 // //     if (err) {
 // //       console.log(err);
@@ -76,7 +74,7 @@
 // //   })
   
 // //   ));
-// //   // TODO: THEN I am prompted to enter the name of the alignment and that alignment is added to the database
+// //   // TODO: THEN I am prompted to enter the name of the and that is added to the database
 // // const addAlignment = (() => (
 // //   pool.query(`SELECT * FROM roles`, (err: Error, result: QueryResult) => {
 // //     if (err) {

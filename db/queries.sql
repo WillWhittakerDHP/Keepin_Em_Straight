@@ -1,31 +1,28 @@
 
--- JOIN commander ON survivors.commander = survivors.survivor_id;
--- SELECT concat(first_name, ' ', last_name) AS "Name", divisions.division_name AS "Division"
--- FROM survivors 
--- JOIN alignments ON survivors.alignment_id = alignments.alignment_id
--- JOIN divisions ON survivors.division_id = divisions.division_id
--- WHERE survivors.alignment_id = 0
--- ;
+JOIN manager ON employees.manager = employees.employee_id;
+SELECT concat(first_name, ' ', last_name) AS "Name", departments.department_name AS "Department"
+FROM employees 
+JOIN departments ON employees.department_id = departments.department_id
+WHERE employees.alignment_id = 0
+;
 
--- SELECT concat(first_name, ' ', last_name) AS "Survivor", alignments.alignment_type AS "Alignment", roles.title AS "Role"
--- FROM survivors 
--- JOIN alignments ON survivors.alignment_id = alignments.alignment_id
--- JOIN divisions ON survivors.division_id = divisions.division_id
--- JOIN roles ON survivors.role_id = roles.role_id 
--- WHERE survivors.division_id = 50
--- ;
+SELECT concat(first_name, ' ', last_name) AS "Employee", roles.title AS "Role"
+FROM employees 
+JOIN departments ON employees.department_id = departments.department_id
+JOIN roles ON employees.role_id = roles.role_id 
+WHERE employees.department_id = 50
+;
 
--- SELECT divisions.division_name AS "Division", SUM(roles.salary) AS "Budget (in cubits)"
--- FROM survivors
--- JOIN divisions ON survivors.division_id = divisions.division_id
--- JOIN roles ON divisions.division_id = divisions.division_id
--- GROUP BY divisions.division_name;
+SELECT departments.department_name AS "Department", SUM(roles.salary) AS "Budget (in cubits)"
+FROM employees
+JOIN departments ON employees.department_id = departments.department_id
+JOIN roles ON departments.department_id = departments.department_id
+GROUP BY departments.department_name;
 
-select array_to_json(array_agg(row_to_json(t)))
-from (
-SELECT survivor_id, first_name, last_name, alignments.alignment_id, roles.role_id, divisions.division_id, commander
-FROM survivors
-JOIN alignments ON survivors.alignment_id = alignments.alignment_id
-JOIN divisions ON survivors.division_id = divisions.division_id
-JOIN roles ON survivors.role_id = roles.role_id
-) t;
+-- select array_to_json(array_agg(row_to_json(t)))
+-- from (
+-- SELECT employee_id, first_name, last_name, roles.role_id, departments.department_id, manager
+-- FROM employees
+-- JOIN departments ON employees.department_id = departments.department_id
+-- JOIN roles ON employees.role_id = roles.role_id
+-- ) t;

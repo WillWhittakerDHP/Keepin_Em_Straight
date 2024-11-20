@@ -1,6 +1,6 @@
 // import inquirer from 'inquirer';
 // import express from 'express';
-// import chooseSurvivorRecord from "./survivorSelector";
+// import chooseEmployeeRecord from "./employeeSelector";
 // import { QueryResult } from 'pg';
 // import { pool, connectToDb } from './connection.ts';
 
@@ -19,16 +19,16 @@
 //     {
 //       type: 'list',
 //       name: 'deleteWhat',
-//       message: 'What do you want to know about the survivors from the 12 Colonies?',
-//       choices: [    'Survivors',
+//       message: 'What do you want to know about the employees from the 12 Colonies?',
+//       choices: [    'Employees',
 //         'Division',
 //         'Roles'
 //       ],
 //     },])
 //     .then((answers) => {
 //       switch (answers.deleteWhat) {
-//   case 'Survivors': {
-//     deleteSurvivor();
+//   case 'Employees': {
+//     deleteEmployee();
 //     break;
 //     }
 //   case 'Division': {
@@ -41,10 +41,10 @@
 //   }
 // }})};
 
-// // TODO: THEN I am prompted to select a survivor to delete and their information is deleted from the database 
-// const deleteSurvivor = (() => (
+// // TODO: THEN I am prompted to select a employee to delete and their information is deleted from the database 
+// const deleteEmployee = (() => (
 //           // const deletedRow = 2;
-//           pool.query(`DELETE FROM favorite_books WHERE id = $1`,
+//           pool.query(`DELETE FROM employees WHERE id = $1`,
 //             [ 0
 //               // deletedRow
 //             ],
@@ -57,10 +57,10 @@
 //           })
           
 //           ));
-//           // TODO: THEN I am prompted to select a division to delete and that division is deleted from the database 
+//           // TODO: THEN I am prompted to select a department to delete and that department is deleted from the database 
 //           const deleteDivision = (() => (
 //           // const deletedRow = 2;
-//           pool.query(`DELETE FROM favorite_books WHERE id = $1`,
+//           pool.query(`DELETE FROM employees WHERE id = $1`,
 //             [ 0
 //               // deletedRow
 //             ],
@@ -76,7 +76,7 @@
 //           // TODO: THEN I am prompted to select a role to delete and that role is deleted from the database 
 // const deleteRoles = (() => (
 //           // const deletedRow = 2;
-//           pool.query(`DELETE FROM favorite_books WHERE id = $1`,
+//           pool.query(`DELETE FROM employees WHERE id = $1`,
 //             [ 0
 //               // deletedRow
 //             ],
