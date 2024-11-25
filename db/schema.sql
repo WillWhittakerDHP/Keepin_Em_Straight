@@ -9,12 +9,12 @@ CREATE DATABASE employees_db;
 -- );
 
 CREATE TABLE departments(
-  department_id INTEGER PRIMARY KEY,
+  department_id SERIAL PRIMARY KEY,
   department_name VARCHAR(30) UNIQUE NOT NULL
 );
 
 CREATE TABLE roles(
-  role_id INTEGER PRIMARY KEY,
+  role_id SERIAL PRIMARY KEY,
   title VARCHAR(30) UNIQUE NOT NULL,
   salary DECIMAL NOT NULL,
   department INTEGER NOT NULL,

@@ -1,15 +1,13 @@
 import express from 'express';
 import inquirer from "inquirer";
-import { pool, connectToDb } from './connection.js';
-import viewAllDepartments from './viewAllDepartments.js';
-import viewAllRoles from './viewAllRoles.js';
-import viewAllEmployees from './viewAllEmployees.js';
-import addDepartment from './addDepartment.js';
-import addRole from './addRole.js';
-import addEmployee from './addEmployee.js';
-import updateEmployeeRole from './updateEmployeeRole.js';
-
-await connectToDb();
+import { pool } from './connection.js';
+import viewDepartments from 'viewDepartments';
+import viewRoles from 'viewRoles';
+import viewEmployees from 'viewEmployees';
+import addDepartment from 'addDepartments';
+import addRole from 'addRole';
+import addEmployee from 'addEmployee';
+import updateEmployeeRole from 'updateEmployeeRole';
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -25,24 +23,20 @@ const { databaseAction } = await inquirer
         type: 'list',
         name: 'databaseAction',
         message: 'What do you want to do about the employees?',
-        choices: [ 'View All Departments', 'View All Roles', 'View All Employees', 'Add Department', 
-          'Add Role', 
-          'Add Employee', 
-          'Update Employee Role', 
-          'Exit', ],
+        choices: [ 'View All Departments', 'View All Roles', 'View All Employees', 'Add Department', 'Add Role', 'Add Employee', 'Update Employee Role', 'Exit', ],
       },
     ])
     switch (databaseAction) {
       case `View All Departments`: {
-        await viewAllDepartments();
+        await viewDepartments();
         break;
       }
       case `View All Roles`: {
-        await viewAllRoles();
+        await viewRoles();
         break;
       }
       case `View All Employees`: {
-        await viewAllEmployees();
+        await viewEmployees();
         break;
       }
       case `Add Department`: { 
@@ -51,7 +45,6 @@ const { databaseAction } = await inquirer
       }
       case `Add Role`: {
         await addRole();
-        break;
       }
       case `Add Employee`: { 
         await addEmployee();
@@ -73,8 +66,9 @@ const { databaseAction } = await inquirer
         console.error ('Error:', err)}
     };
 
+function init() {
   chooseCensusActions();
-
+};
 
 app.use((_req, res) => {
   res.status(404).end();
@@ -83,3 +77,5 @@ app.use((_req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+init();
