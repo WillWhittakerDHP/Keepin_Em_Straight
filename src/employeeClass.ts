@@ -2,7 +2,6 @@ import inquirer from "inquirer";
 
 // // define the Employee class
 class Employee {
-  employeeId: (number);
   firstName: (string);
   lastName: (string);
   department: (string);
@@ -10,14 +9,12 @@ class Employee {
   manager: (string);
 
   constructor(
-    employeeId: (number),
     firstName: (string),
     lastName: (string),
     department: (string),
     role: (string),
     manager: (string)
   ) {
-    this.employeeId = employeeId;
     this.firstName = firstName;
     this.lastName = lastName;
     this.department = department;
@@ -59,8 +56,6 @@ class Employee {
     ])
     .then((answers) => {
       const employee = new Employee(
-        // TODO: How do I deal with the ID so it doesn't conflict with the database?
-        0,
         answers.firstName,
         answers.lastName,
         answers.department,
@@ -68,6 +63,8 @@ class Employee {
         answers.manager,
       );
       return employee;
-});}} 
+    }
+  );
+}} 
 
 export default Employee

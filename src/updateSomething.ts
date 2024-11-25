@@ -1,8 +1,8 @@
 // import inquirer from 'inquirer';
 // import express from 'express';
-// import chooseEmployeeRecord from "./employeeSelector";
+// // import chooseEmployeeRecord from "./employeeSelector";
 // import { QueryResult } from 'pg';
-// import { pool, connectToDb } from './connection.ts';
+// import { pool, connectToDb } from './connection.js';
 
 // await connectToDb();
 
@@ -19,7 +19,7 @@
 //     {
 //       type: 'list',
 //       name: 'updateWhat',
-//       message: 'What do you want to know about the employees from the 12 Colonies?',
+//       message: 'What do you want to change about the employee?',
 //       choices: ['Employee`s manager',
 //         'Employee`s role'
 //       ],
@@ -27,7 +27,7 @@
 //     .then((answers) => {
 //       switch (answers.updateWhat) {
 //         case 'Employee`s manager': {
-//           updateCommander();
+//           updateManager();
 //           break;
 //         }
 //         case 'Employee`s role': {
@@ -36,28 +36,32 @@
 //         }
 //       }})};
 
-//       // TODO: THEN I am prompted to select a employee to update and am I prompted to input a new manager and this information is updated in the database 
-//   const updateCommander = (() => (
-//     pool.query(`SELECT * FROM roles`, (err: Error, result: QueryResult) => {
-//       if (err) {
-//         console.log(err);
-//       } else if (result) {
-//         console.log(result.rows);
-//       }
-//     })
-    
-//     ));
-//       // TODO: THEN I am prompted to select a employee to update and am I prompted to input a new role and this information is updated in the database 
-//       const updateRole = (() => (
-//         pool.query(`SELECT * FROM roles`, (err: Error, result: QueryResult) => {
-//           if (err) {
-//             console.log(err);
-//           } else if (result) {
-//             console.log(result.rows);
-//           }
-//         })
-        
-//         ));
+      
+// // TODO: THEN I am prompted to select a employee to update and am I prompted to input a new manager and this information is updated in the database 
+// const updateManager = (() => (
+//   pool.query(`UPDATE employees
+//     SET manager = '$1'
+//     WHERE id = '$2';`, (err: Error, result: QueryResult) => {
+//     if (err) {
+//       console.log(err);
+//     } else if (result) {
+//       console.log(result.rows);
+//     }
+//   })
+// ));
+
+// // TODO: THEN I am prompted to select a employee to update and am I prompted to input a new role and this information is updated in the database 
+// const updateRole = (() => (
+//   pool.query(`UPDATE employees
+//     SET role = '$1'
+//     WHERE id = '$2';`, (err: Error, result: QueryResult) => {
+//     if (err) {
+//       console.log(err);
+//     } else if (result) {
+//       console.log(result.rows);
+//     }
+//   })
+// ));
 
 // app.use((_req, res) => {
 //   res.status(404).end();

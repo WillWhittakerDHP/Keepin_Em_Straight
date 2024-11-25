@@ -12,10 +12,10 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-let targetDepartment = ['',''];
+let targetDepartment = 0;
 
-function departmentChooser() {
-  inquirer.prompt([
+async function departmentChooser(): Promise<void> {
+  await inquirer.prompt([
     {
       type: 'list',
       name: 'departmentChoice',
@@ -26,40 +26,34 @@ function departmentChooser() {
   .then((answers) => {
     switch (answers.departmentChoice) {
       case 'Command': {
-        targetDepartment = ['Command','00'];
-        break;
+        return targetDepartment = 0o0;
       }
       case 'Combat': {
-        targetDepartment = ['Combat','10'];
-        break;
+        return targetDepartment = 10;
       }
       case 'Engineering': {
-        targetDepartment = ['Engineering','20'];
-        break;
+        return targetDepartment = 20;
       }
       case 'Executive': {
-        targetDepartment = ['Executive','30'];
-        break;
+        return targetDepartment = 30;
       }
       case 'Quorum': {
-        targetDepartment = ['Quorum','40'];
-        break;
+        return targetDepartment = 40;
       }
       case 'Civilian': {
-        targetDepartment = ['Civilian','50'];
-        break;
+        return targetDepartment = 50;
       }
     }
   })
 };
 
-function viewSomething() {
+const viewSomething = function() {
   inquirer
   .prompt([
     {
     type: 'list',
     name: 'viewWhat',
-    message: 'What do you want to know about the employees?',
+    message: 'What do you want to view about the employees?',
     choices: [    'All employees',
       'All roles',
       'All departments',
@@ -70,7 +64,7 @@ function viewSomething() {
   .then((answers) => {
     switch (answers.viewWhat) {
       case 'All employees': {
-        viewHumanity();
+        viewEmployees;
         break;
       }
       case 'All roles': {
@@ -82,17 +76,18 @@ function viewSomething() {
         break;
       }
       case 'Employees by department': {
+        departmentChooser();
         viewEmployeesByDepartment();
         break;
       }
       case 'Each department`s total utilized budget': {
         viewDepartmentBudgets();
+        break;
       }
     }})};
-// // TODO: THEN I am presented with a formatted table showing employee data, including employee ids, full names, roles, departments, salaries, and manager to whom the employees report
-const viewHumanity = (() => {
+// TODO: THEN I am presented with a formatted table showing employee data, including employee ids, full names, roles, departments, salaries, and manager to whom the employees report
+const viewEmployees = 
 pool.query(`SELECT concat(first_name, ' ', last_name) AS "Name", departments.department_name AS "Department", roles.title AS "Role", roles.salary AS "Salary"
-
 FROM employees
 JOIN departments ON employees.department_id = departments.department_id
 JOIN roles ON employees.role_id = roles.role_id;`, (err: Error, result: QueryResult) => {
@@ -102,46 +97,42 @@ JOIN roles ON employees.role_id = roles.role_id;`, (err: Error, result: QueryRes
     console.table(result.rows);
     return; 
   }
-}
-)
-}
-);
+});
 
-// // TODO: THEN I am presented with the role, role id, the department that role belongs to, and the salary for that role
-const viewRoles = (() => (
-  pool.query(`SELECT title AS "Role", role_id AS "Role ID", salary AS "Salary (in Cubits)", departments.department_name AS "Department" FROM roles JOIN departments ON roles.department = departments.department_id;`, (err: Error, result: QueryResult) => {
+// TODO: THEN I am presented with the role, role id, the department that role belongs to, and the salary for that role
+const viewRoles = function(){ pool.query(`SELECT title AS "Role", role_id AS "Role ID", salary AS "Salary", departments.department_name AS "Department" FROM roles JOIN departments ON roles.department = departments.department_id;`, (err: Error, result: QueryResult) => {
     if (err) {
       console.log(err);
     } else if (result) {
       console.table(result.rows);
-    }
-})));
-// // TODO: THEN I am presented with a formatted table showing department names and department ids
-const  viewDepartments = (() => (
-  pool.query(`SELECT department_name AS "Department", department_id AS "Department ID" FROM departments;`, (err: Error, result: QueryResult) => {
+    };
+})};
+
+// TODO: THEN I am presented with a formatted table showing department names and department ids
+const  viewDepartments = function(){ pool.query(`SELECT department_name AS "Department", department_id AS "Department ID" FROM departments;`, (err: Error, result: QueryResult) => {
     if (err) {
       console.log(err);
     } else if (result) {
       console.table(result.rows);
-    }
-})));
-// TODO: THEN I am presented with a formatted table showing employees in that department including employee's full names, and role
+    };
+})};
+
+ // TODO: THEN I am presented with a formatted table showing employees in that department including employee's full names, and role
 const viewEmployeesByDepartment = function(){
-  departmentChooser;
-  pool.query(`SELECT concat(first_name, ' ', last_name) AS "Department", roles.title AS "Role"
+  pool.query(`SELECT concat(first_name, ' ', last_name) AS "Employee", roles.title AS "Role"
 FROM employees 
 JOIN departments ON employees.department_id = departments.department_id
 JOIN roles ON employees.role_id = roles.role_id 
 WHERE employees.department_id = $1;`, [targetDepartment], (err: Error, result: QueryResult) => {
-  if (err) {
-    console.log(err);
-    } else if (result) {
-      console.table(result.rows);
-      }
-      })};
-// // TODO: THEN I am presented with a formatted table showing the name of each department and full budget for that department
-const viewDepartmentBudgets = (() => (
-  pool.query(`SELECT departments.department_name AS "Department", SUM(roles.salary) AS "Budget (in cubits)"
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(`${result.rowCount} row(s) deleted!`);
+        }
+      });
+    };
+// TODO: THEN I am presented with a formatted table showing the name of each department and full budget for that department
+const viewDepartmentBudgets = function(){ pool.query(`SELECT departments.department_name AS "Department", SUM(roles.salary) AS "Budget"
 FROM employees
 JOIN departments ON employees.department_id = departments.department_id
 JOIN roles ON departments.department_id = departments.department_id
@@ -151,9 +142,7 @@ GROUP BY departments.department_name;`, (err: Error, result: QueryResult) => {
     } else if (result) {
       console.table(result.rows);
     }
-  })
-  
-  ));
+  })};
 
 app.use((_req, res) => {
   res.status(404).end();

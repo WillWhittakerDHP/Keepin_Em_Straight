@@ -1,10 +1,10 @@
 import inquirer from "inquirer";
 import viewSomething from "./viewSomething.js";
-// import addSomething from "./addSomething.js";
+import addSomething from "./addSomething.js";
 // import updateSomething from "./updateSomething.js";
 // import deleteSomething from "./deleteSomething.js";
 
-let exit = false;
+// let exit = false;
 
 function chooseCensusActions(): void {
   inquirer
@@ -20,42 +20,42 @@ function chooseCensusActions(): void {
     switch (answers.databaseAction) {
       case `View`: {
         viewSomething();
-        break;
+        return;
       }
       case `Add`: {
         console.log(`add`);
-        // addSomething();
+        addSomething();
         break;
       }
-      case `Update`: {
-        console.log(`update`);
-        // updateSomething();
-        break;
-        }
-      case `Delete`: { 
-        console.log(`delete`);
-        // deleteSomething();
-        break;
-      }
-      case `Nothing`: {
-        console.log(`done`);
-        exit = true;
-      }
-      continueCensusActions();
+      // case `Update`: {
+      //   console.log(`update`);
+      //   updateSomething();
+      //   break;
+      //   }
+      // case `Delete`: { 
+      //   console.log(`delete`);
+      //   deleteSomething();
+      //   break;
+      // }
+      // case `Nothing`: {
+      //   console.log(`done`);
+      //   exit = true;
+      // }
+      // continueCensusActions;
       }
     }
   )
   };
 
-function continueCensusActions(): void {
-  if (!exit) {
-    // if the user does not want to exit, perform actions on the selected employee
-    chooseCensusActions();
-  } else {
-  // exit the cli if the user selects exit
-    exit = true;
-  } 
-}
+// function continueCensusActions(): void {
+//   if (!exit) {
+//     // if the user does not want to exit, perform actions on the selected employee
+//     chooseCensusActions;
+//   } else {
+//   // exit the cli if the user selects exit
+//     exit = true;
+//   } 
+// }
 
 function init() {
   chooseCensusActions();
